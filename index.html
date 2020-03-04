@@ -1,9 +1,101 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Hello world</title>
+<meta charset="UTF-8">
+<title>Blog</title>
+
+<script type="text/javascript" src="jquery-1.12.2.min.js"></script>
+<script src="https://cdn.ckeditor.com/ckeditor5/17.0.0/classic/ckeditor.js"></script>
+
+<link rel='stylesheet' type="text/css" href="index.css" />
+
 </head>
 <body>
-hello world 
+	<select class="selector-version"></select>
+
+	<div class='btn-container'>
+		<button id='btn-login'>Login</button>
+		<button id='btn-logout' class="hidden">Logout</button>
+	</div>
+
+	<h1 style="text-align: center;">基督教香港信義會錦上生命堂</h1>
+
+	<div class="text-container-list">
+		<div id='date-title' class='text-container'>
+			<div class="btn-edit-container hidden">
+				<button class='btn-edit'>Edit</button>
+			</div>
+			
+			<h2 class='text-content'></h2>
+		</div>
+
+		<div id='church-subject' class='text-container'>
+			<div class="btn-edit-container hidden">
+				<button class='btn-edit'>Edit</button>
+			</div>
+			
+			<h3 class='text-content'></h3>
+		</div>
+
+
+		<div id='subject-lection' class='text-container'>
+			<div class="btn-edit-container hidden">
+				<button class='btn-edit'>Edit</button>
+			</div>
+			
+			<div class='text-content'></div>
+		</div>
+
+		<div id='artical' class='text-container'>
+			<div class="btn-edit-container hidden">
+				<button class='btn-edit'>Edit</button>
+			</div>
+			
+			<div class='text-content'></div>
+		</div>
+
+		<div id='keep-watching' class='text-container'>
+			<div class="btn-edit-container hidden">
+				<button class='btn-edit'>Edit</button>
+			</div>
+			
+			<div class='text-content'></div>
+		</div>
+
+		<div id='church-content' class='text-container'>
+			<div class="btn-edit-container hidden">
+				<button class='btn-edit'>Edit</button>
+			</div>
+			
+			<div class='text-content'></div>
+		</div>
+
+		<div id='special-content' class='text-container'>
+			<div class="btn-edit-container hidden">
+				<button class='btn-edit'>Edit</button>
+			</div>
+			
+			<div class='text-content'></div>
+		</div>
+	</div>
+
+	<div class='popup editor-popup hidden'>
+		<div class='popup-content'>
+			<div name="content" id="editor"></div>
+			<button class="btn-editor-confirm">Confirm</button>
+		</div>
+	</div>
+	
+
+<!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
+
+<!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-app.js"></script>
+
+<!-- Add Firebase products that you want to use -->
+<script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-firestore.js"></script>
+<script src="index.js"></script>
+
 </body>
 </html>
