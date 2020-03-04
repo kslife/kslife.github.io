@@ -13,11 +13,6 @@
 <body>
 	<select class="selector-version"></select>
 
-	<div class='btn-container'>
-		<button id='btn-login'>Login</button>
-		<button id='btn-logout' class="hidden">Logout</button>
-	</div>
-
 	<h1 style="text-align: center;">基督教香港信義會錦上生命堂</h1>
 
 	<div class="text-container-list">
@@ -83,6 +78,15 @@
 		<div class='popup-content'>
 			<div name="content" id="editor"></div>
 			<button class="btn-editor-confirm">Confirm</button>
+		</div>
+	</div>
+
+	<div class='popup login-popup'>
+		<div class='popup-content'>
+			<div class="title">基督教香港信義會錦上生命堂</div>
+			<label for="pwd">密碼:</label>
+			<input type="password" id="pwd" name="pwd" minlength="8">
+			<input type="submit" class='btn-login'>
 		</div>
 	</div>
 	

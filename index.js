@@ -26,10 +26,8 @@ $(init);
 
 function init()
 {
-	
 	initEditor();
 	initBtn();
-	initData();
 }
 
 function initEditor()
@@ -51,64 +49,28 @@ function initEditor()
 function initBtn()
 {
 
-	$('#btn-login').click(function() {
-		var provider = new firebase.auth.GoogleAuthProvider();
-		provider.setCustomParameters({
-		  'login_hint': 'user@example.com'
-		});
-		firebase.auth().signInWithPopup(provider).then(function(result) {
-			$('#btn-logout').removeClass("hidden");
-			$('#btn-login').addClass('hidden');
-			// This gives you a Google Access Token. You can use it to access the Google API.
-			var token = result.credential.accessToken;
-			// The signed-in user info.
-			var user = result.user;
-
-			db.collection("users").doc(user.email).get().then(function(doc) {
-			    if (doc.exists) {
-			        console.log("Document data:", doc.data());
-			        let userObj = doc.data();
-			        if(userObj.role == 1)
-			        {
-			        	openEditMode();
-			        }
-			        else
-			        {
-			        	closeEditMode();
-			        }
-
-			    } else {
-			        // doc.data() will be undefined in this case
-			        console.log("No such document!");
-
-			        closeEditMode();
-			    }
-			}).catch(function(error) {
-			    console.log("Error getting document:", error);
+	$('.btn-login').click(function() {
+		db.collection("users").get().then(querySnapshot => {
+			querySnapshot.forEach((doc) => {
+				let userObj = doc.data();
+				let password = $("#pwd").val();
+				if(userObj.password == password)
+				{
+					$(".login-popup").addClass("hidden");
+					initData();
+					if(userObj.role == 2)
+					{
+						openEditMode();
+					}
+					else
+					{
+						closeEditMode();
+					}
+				}
 			});
-
-
-
-		}).catch(function(error) {
-			// Handle Errors here.
-			var errorCode = error.code;
-			var errorMessage = error.message;
-			// The email of the user's account used.
-			var email = error.email;``
-			// The firebase.auth.AuthCredential type that was used.
-			var credential = error.credential;
-			// ...
-			console.log(error);
-		});
-	});
-
-	$('#btn-logout').click(function() {
-		firebase.auth().signOut().then(function() {
-			// Sign-out successful.
-			$('#btn-logout').addClass("hidden");
-			$('#btn-login').removeClass('hidden');
-		}).catch(function(error) {
-			// An error happened.
+			currDate = maxInDateArr(currDateArr);
+			$(".selector-version").val(currDate);
+			loadContentData()
 		});
 	});
 

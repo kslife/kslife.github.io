@@ -5,6 +5,12 @@ body
 	margin: auto;
 }
 
+.login-popup .popup-content
+{
+	padding-top: 200px;
+	height: auto;
+}
+
 .btn
 {
 	cursor: pointer;
