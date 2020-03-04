@@ -32,18 +32,8 @@ function init()
 
 function initEditor()
 {
-	ClassicEditor
-	    .create( document.querySelector( '#editor' ), {
-	        toolbar: [
-	            'heading', 'bulletedList', 'numberedList', 'undo', 'redo'
-	        ]
-	    })
-	    .then( newEditor => {
-	        editor = newEditor;
-	    } )
-	    .catch( error => {
-	        console.error( error );
-	    } );
+
+	CKEDITOR.replace( 'editor1' );
 }
 
 function initBtn()
@@ -85,7 +75,7 @@ function initBtn()
 		currContainerId = $(parent).attr('id');
 		$(parent.find(".btn-confirm")).removeClass("hidden");
 		let html = $(parent.find('.text-content')).html();
-		editor.setData(html);
+		CKEDITOR.instances.editor1.setData(html);
 		$(".editor-popup").removeClass("hidden");
 		$(".text-container-list").addClass("hidden");
 	});
@@ -95,7 +85,7 @@ function initBtn()
 		let btnEdit = $(parent.find(".btn-edit"));
 		let parentId = $(parent).attr('id');
 		let textContent = $(parent.find('.text-content'));
-		let text = editor.getData();
+		let text = CKEDITOR.instances.editor1.getData();
 		db.collection(currDate).doc(parentId).set({
 		    text: text,
 		})
