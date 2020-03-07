@@ -34,6 +34,7 @@ $(init);
 
 function init()
 {
+	initEditor();
 	initBtn();
 }
 
@@ -146,15 +147,12 @@ function loadContentData()
 	$(".text-content").empty();
 	db.collection(currDate).get().then((querySnapshot) => {
 	    querySnapshot.forEach((doc) => {
-	    	let contentObj = doc.data();
-	    	console.log(contentObj);
-	       	let keys = Object.keys(contentObj);
-	       	$.each(keys, function(idx, key) {
-	       		imageCount++;
-	       		let url = contentObj[key];
-	       		let img = $("<img>").attr('src', url);
-			   	$(".image-container").append(img);
-	       	});
+	        let contentObj = doc.data();
+	        let containerId = doc.id;
+	        let text = contentObj.text;
+	        console.log(containerId);
+	        let container = $("#"+containerId);
+	        $(container.find(".text-content")).html(text);
 	    });
 	});
 }
@@ -164,13 +162,11 @@ function openEditMode()
 	editMode = true;
 	$(".btn-edit-container").removeClass("hidden");
 	$(".btn-add").removeClass("hidden");
-	$(".upload-part").removeClass("hidden");
 }
 function closeEditMode()
 {
 	editMode = false;
 	$(".btn-edit-container").addClass("hidden");
-	$(".upload-part").addClass("hidden");
 }
 
 function maxInDateArr(dateArr){
@@ -233,10 +229,9 @@ function uploadFile(file)
 	  // Upload completed successfully, now we can get the download URL
 	  uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
 			console.log('File available at', downloadURL);
-			let setData = {};
-			setData[imageCount] = downloadURL;
-
-			db.collection(currDate).doc('images').set(setData, {merge:true})
+			db.collection(currDate).doc(imageCount+"").set({
+			    url: downloadURL,
+			})
 			.then(function() {
 			   console.log("Document successfully written!");
 			   imageCount++;

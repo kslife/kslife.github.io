@@ -3,6 +3,12 @@ body
 	font-size: xx-large;
 	max-width: 95%;
 	margin: auto;
+	height: 100%; 
+}
+
+img
+{
+	width: 100%;
 }
 
 .login-popup .popup-content
@@ -69,6 +75,8 @@ body
     text-align: center;
     margin: auto;
 }
+
+
 
 .hidden
 {

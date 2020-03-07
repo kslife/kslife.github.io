@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Blog</title>
+
+<script type="text/javascript" src="jquery-1.12.2.min.js"></script>
+<script src="ckeditor/ckeditor.js"></script>
+
+<link rel='stylesheet' type="text/css" href="index.css" />
+
+</head>
+<body>
+	<select class="selector-version"></select>
+
+	<h1 style="text-align: center;">基督教香港信義會錦上生命堂</h1>
+
+	<embed src="http://www.africau.edu/images/default/sample.pdf" width="500" height="375">
+
+
+	<iframe src="http://www.africau.edu/images/default/sample.pdf" style="width:718px; height:700px;" frameborder="0"></iframe>
+
+
+	<div class="text-container-list">
+		<div id='date-title' class='text-container'>
+			<div class="btn-edit-container hidden">
+				<button class='btn-edit'>Edit</button>
+			</div>
+			
+			<h2 class='text-content'></h2>
+		</div>
+
+		<div id='church-subject' class='text-container'>
+			<div class="btn-edit-container hidden">
+				<button class='btn-edit'>Edit</button>
+			</div>
+			
+			<h3 class='text-content'></h3>
+		</div>
+
+
+		<div id='subject-lection' class='text-container'>
+			<div class="btn-edit-container hidden">
+				<button class='btn-edit'>Edit</button>
+			</div>
+			
+			<div class='text-content'></div>
+		</div>
+
+		<div id='artical' class='text-container'>
+			<div class="btn-edit-container hidden">
+				<button class='btn-edit'>Edit</button>
+			</div>
+			
+			<div class='text-content'></div>
+		</div>
+
+		<div id='keep-watching' class='text-container'>
+			<div class="btn-edit-container hidden">
+				<button class='btn-edit'>Edit</button>
+			</div>
+			
+			<div class='text-content'></div>
+		</div>
+
+		<div id='church-content' class='text-container'>
+			<div class="btn-edit-container hidden">
+				<button class='btn-edit'>Edit</button>
+			</div>
+			
+			<div class='text-content'></div>
+		</div>
+
+		<div id='special-content' class='text-container'>
+			<div class="btn-edit-container hidden">
+				<button class='btn-edit'>Edit</button>
+			</div>
+			
+			<div class='text-content'></div>
+		</div>
+	</div>
+
+	<div class='popup editor-popup hidden'>
+		<div class='popup-content'>
+			
+			<button class="btn-editor-confirm">Confirm</button>
+		</div>
+	</div>
+
+	<div class='popup login-popup'>
+		<div class='popup-content'>
+			<div class="title">基督教香港信義會錦上生命堂</div>
+			<label for="pwd">密碼:</label>
+			<input type="password" id="pwd" name="pwd" minlength="8">
+			<input type="submit" class='btn-login'>
+
+			<textarea name="editor1" id="editor1" rows="10" cols="80"> </textarea>
+	</div>
+	
+
+<!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
+
+<!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-app.js"></script>
+
+<!-- Add Firebase products that you want to use -->
+<script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.2.0/firebase-storage.js"></script>
+<script src="index.js"></script>
+
+
+</body>
+</html>
