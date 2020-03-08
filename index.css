@@ -13,9 +13,35 @@ img
 
 .login-popup .popup-content
 {
-	padding-top: 200px;
-	height: auto;
+	margin-top: -50px;
+    height: 100px;
+    position: absolute;
+    top: 50%;
+    width: 600px;
+    margin-left: -300px;
+    left: 50%;
 }
+
+.login-popup .popup-content .title
+{
+	font-size: 45px;
+}
+
+.login-popup .popup-content label, 
+.login-popup .popup-content input
+{
+	font-size: 30px;
+    margin-top: 10px;
+}
+
+.login-popup .popup-content button
+{
+	font-size: 20px;
+    margin-top: 10px;
+    padding: 10px 20px 10px 20px;
+    border-radius: 10px;
+} 
+
 
 .btn
 {
@@ -31,6 +57,7 @@ img
 {
 	position: absolute;
     top: 11px;
+    font-size: 30px;
 }
 
 .btn-edit-container
