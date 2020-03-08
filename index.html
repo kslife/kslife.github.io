@@ -11,13 +11,18 @@
 
 </head>
 <body>
-	<select class="selector-version"></select>
 
-	<br>
-
+	<div class='version-part'>
+		<select class="selector-version"></select>
+		<button class='but-edit-version btn edit-mode'>編輯</button>
+		<button class='but-add-version btn edit-mode'>新增</button>
+	</div>
+	
 	<div class='image-container'></div>
 
-	<div class='upload-part hidden'>
+	<div class='upload-part edit-mode'>
+		<hr>
+		<label for="btn-upload">增加圖片:</label>
 		<input type="file" class="btn-upload" name="avatar" accept="image/png, image/jpeg">
 	</div>
 
@@ -28,8 +33,19 @@
 			<input type="password" id="pwd" name="pwd" minlength="8">
 			<br>
 			<button class='btn-login'>登錄</button> 
+		</div>
 	</div>
 	
+	<div class='popup version-popup hidden'>
+		<div class='popup-content'>
+			<label for="version-name">版本名稱:</label>
+			<input type="month" id="version-name" name="version-name">
+			<br>
+			<button class="btn-version-confirm">確定</button>
+			<button class="btn-version-cancel">取消</button>
+			<button class="btn-version-delete hidden">刪除</button>
+		</div>
+	</div>
 
 <!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
 

@@ -26,10 +26,6 @@ var editor;
 var currContainerId;
 var imageCount = 0;
 
-// Create a reference from a Google Cloud Storage URI
-var gsReference = storage.refFromURL('gs://kslife-001.appspot.com/202003_1.jpg')
-gsReference.getDownloadURL().then(function(url){console.log(url)});
-
 $(init);
 
 function init()
@@ -69,13 +65,76 @@ function initBtn()
 			});
 			currDate = maxInDateArr(currDateArr);
 			$(".selector-version").val(currDate);
-			loadContentData()
+			loadContentData();
 		});
 	});
 
 	$(".selector-version").change(function() {
 		currDate = $(this).val();
 		loadContentData();
+	});
+
+	$(".but-edit-version").click(function() {
+		$(".image-container").addClass("hidden");
+		$(".version-popup").removeClass("hidden");
+		let version = currDate.substring(0, 4) + "-" + currDate.substring(4);
+		$("#version-name").val(version);
+		$(".btn-version-delete").removeClass("hidden");
+	});
+
+	$(".but-add-version").click(function() {
+		$(".image-container").addClass("hidden");
+		$(".version-popup").removeClass("hidden");
+		$(".btn-version-delete").addClass("hidden");
+	});
+
+	$(".btn-version-confirm").click(function() {
+		let version = $("#version-name").val();
+		version = version.replace("-", "");
+
+		db.collection('meta').doc(version).set({
+		    visible: true,
+		})
+		.then(function() {
+		    console.log("Document successfully written!");
+		    $(".version-popup").addClass("hidden");
+		    $(".image-container").removeClass("hidden");
+		    if(currDateArr.indexOf(version) == -1)
+		    {
+		    	currDateArr.push(version);
+		    	$(".selector-version").append(new Option(version, version));
+		    }
+		    currDate = maxInDateArr(currDateArr);
+			$(".selector-version").val(currDate);
+			loadContentData();
+		})
+		.catch(function(error) {
+		    console.error("Error writing document: ", error);
+		});
+	});
+
+	$(".btn-version-cancel").click(function() {
+		$(".image-container").removeClass("hidden");
+		$(".version-popup").addClass("hidden");
+		$(".btn-version-delete").addClass("hidden");
+	});
+
+	$(".btn-version-delete").click(function() {
+		db.collection("meta").doc(currDate).delete().then(function() {
+		    console.log("Document successfully deleted!");
+			currDateArr.splice(currDateArr.indexOf(currDate), 1);
+			$(".selector-version option[value="+currDate+"]").remove();
+
+		    currDate = maxInDateArr(currDateArr);
+			$(".selector-version").val(currDate);
+			$(".version-popup").addClass("hidden");
+			loadContentData();
+
+		}).catch(function(error) {
+		    console.error("Error removing document: ", error);
+		});
+
+		
 	});
 
 	$(".btn-edit").click(function() {
@@ -100,9 +159,6 @@ function initBtn()
 		})
 		.then(function() {
 		    console.log("Document successfully written!");
-		    //$(btnConfirm).addClass("hidden");
-		    //$(textContent).attr("contenteditable", false);
-		    //$(btnEdit).removeClass("hidden");
 		    $(".editor-popup").addClass("hidden");
 		    $(".text-container-list").removeClass("hidden");
 		    loadContentData();
@@ -113,12 +169,8 @@ function initBtn()
 	});
 
 	$(".btn-upload").change(function() {
-		console.log("fdsfasdfsd");
-		
 		var file = $(this)[0].files[0];
 		uploadFile(file);
-		
-		
 	});
 }
 
@@ -143,17 +195,45 @@ function initData()
 
 function loadContentData()
 {
-	$(".text-content").empty();
+	$(".image-container").empty();
+	imageCount = 0;
+	$(".image-container").removeClass("hidden");
 	db.collection(currDate).get().then((querySnapshot) => {
 	    querySnapshot.forEach((doc) => {
 	    	let contentObj = doc.data();
 	    	console.log(contentObj);
 	       	let keys = Object.keys(contentObj);
 	       	$.each(keys, function(idx, key) {
-	       		imageCount++;
 	       		let url = contentObj[key];
-	       		let img = $("<img>").attr('src', url);
-			   	$(".image-container").append(img);
+	       		let imgPart = $("<div>").addClass("image-part");
+	       		let editPart = $("<div>").addClass("edit-mode");
+
+	       		if(!editMode)
+	       		{
+	       			editPart.addClass("hidden");
+	       		}
+	       		let label = $("<label>").html("更換圖片：")
+	       		let uploadFileBtn = $("<input>").addClass("btn-edit-img").attr("type", "file").attr("accept", "image/png, image/jpeg");
+	       		uploadFileBtn.change(function() {
+	       			var file = $(this)[0].files[0];
+					uploadFile(file, key);
+	       		});
+	       		let deleteFileBtn = $("<button>").addClass("btn-delete-img").html("刪除圖片");
+	       		deleteFileBtn.click(function() {
+	       			var imagesRef = db.collection(currDate).doc('images');
+					var imageObj = {};
+					imageObj[key+""] = firebase.firestore.FieldValue.delete();
+					var removeImage = imagesRef.update(imageObj);
+					loadContentData();
+	       		});
+
+	       		editPart.append($("<hr>")).append(label).append(uploadFileBtn).append(deleteFileBtn);
+
+	       		let img = $("<img>").attr('src', url).addClass("img-artical").attr("index", key);
+
+	       		imgPart.append(editPart).append(img);
+			   	$(".image-container").append(imgPart);
+			   	imageCount++;
 	       	});
 	    });
 	});
@@ -165,12 +245,14 @@ function openEditMode()
 	$(".btn-edit-container").removeClass("hidden");
 	$(".btn-add").removeClass("hidden");
 	$(".upload-part").removeClass("hidden");
+	$(".edit-mode").removeClass("hidden");
 }
 function closeEditMode()
 {
 	editMode = false;
 	$(".btn-edit-container").addClass("hidden");
 	$(".upload-part").addClass("hidden");
+	$(".edit-mode").addClass("hidden");
 }
 
 function maxInDateArr(dateArr){
@@ -189,7 +271,7 @@ function maxInDateArr(dateArr){
 	return year+month +'';
 }
 
-function uploadFile(file)
+function uploadFile(file, currImgIndex = -1)
 {
 	// Create the file metadata
 	var metadata = {
@@ -234,18 +316,58 @@ function uploadFile(file)
 	  uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
 			console.log('File available at', downloadURL);
 			let setData = {};
-			setData[imageCount] = downloadURL;
-
+			if(currImgIndex >= 0)
+			{
+				setData[currImgIndex] = downloadURL;
+			}
+			else
+			{
+				setData[imageCount] = downloadURL;
+			}
 			db.collection(currDate).doc('images').set(setData, {merge:true})
 			.then(function() {
-			   console.log("Document successfully written!");
-			   imageCount++;
-			   let img = $("<img>").attr('src', downloadURL);
-			   $(".image-container").append(img);
+				console.log("Document successfully written!");
+			   	if(currImgIndex >= 0)
+			   	{
+			   		$(".img-artical[index="+currImgIndex+"]").attr("src", downloadURL);
+			   	}
+			   	else
+			   	{
+			   		let idx = imageCount;
+			   		let imgPart = $("<div>").addClass("image-part");
+		       		let editPart = $("<div>").addClass("edit-mode");
+
+		       		if(!editMode)
+		       		{
+		       			editPart.addClass("hidden");
+		       		}
+		       		let label = $("<label>").html("更換圖片：")
+		       		let uploadFileBtn = $("<input>").addClass("btn-edit-img").attr("type", "file").attr("accept", "image/png, image/jpeg");
+		       		uploadFileBtn.change(function() {
+		       			var file = $(this)[0].files[0];
+						uploadFile(file, idx);
+		       		});
+		       		let deleteFileBtn = $("<button>").addClass("btn-delete-img").html("刪除圖片");
+		       		deleteFileBtn.click(function() {
+						var imagesRef = db.collection(currDate).doc('images');
+						var imageObj = {};
+						imageObj[idx+""] = firebase.firestore.FieldValue.delete();
+						var removeImage = imagesRef.update(imageObj);
+						loadContentData();
+		       		});
+
+	       			editPart.append($("<hr>")).append(label).append(uploadFileBtn).append(deleteFileBtn);
+
+			   		let img = $("<img>").attr('src', downloadURL).addClass("img-artical").attr("index", idx);
+
+		       		imgPart.append(editPart).append(img);
+				   	$(".image-container").append(imgPart);
+				   	imageCount++;
+				}
 			})
 			.catch(function(error) {
 			    console.error("Error writing document: ", error);
 			});
-		  });
+		 });
 	});
 }

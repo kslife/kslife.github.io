@@ -22,30 +22,50 @@ img
     left: 50%;
 }
 
-.login-popup .popup-content .title
+.popup .popup-content .title
 {
 	font-size: 45px;
 }
 
-.login-popup .popup-content label, 
-.login-popup .popup-content input
+.popup .popup-content label, 
+.popup .popup-content input
 {
 	font-size: 30px;
     margin-top: 10px;
 }
 
-.login-popup .popup-content button
+.popup .popup-content button
 {
 	font-size: 20px;
     margin-top: 10px;
     padding: 10px 20px 10px 20px;
     border-radius: 10px;
+    min-width: 150px;
 } 
 
+.version-part
+{
+	margin: 20px;
+}
+
+.version-part .selector-version
+{
+    font-size: 30px;
+}
+
+.version-part .btn-add-version
+{
+}
+
+.btn-version-delete {
+    background-color: red;
+    color: wheat;
+}
 
 .btn
 {
 	cursor: pointer;
+	font-size: 20px;
 }
 
 .btn-container
@@ -53,12 +73,7 @@ img
 	text-align: right;
 }
 
-.selector-version
-{
-	position: absolute;
-    top: 11px;
-    font-size: 30px;
-}
+
 
 .btn-edit-container
 {
