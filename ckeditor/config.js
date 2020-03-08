@@ -7,17 +7,15 @@ CKEDITOR.editorConfig = function( config ) {
 	// Define changes to default configuration here. For example:
 	// config.language = 'fr';
 	// config.uiColor = '#AADC6E';
-	config.toolbarGroups = [
-		{ name: 'clipboard', groups: [ 'clipboard', 'undo' ] },
-		{ name: 'links' },   
-		'/',
-		{ name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
-		{ name: 'paragraph', groups: [ 'list', 'indent',  'align' ] },  
-		{ name: 'styles' },   
-		{ name: 'colors' },   
-	];
+	config.toolbar = [
 
-	//config.removePlugins = 'cloudservices';
+	    [ 'Preview', 'Undo', 'Redo', 'RemoveFormat', 'Image','Smiley', ],
+	    '/',
+	    ['Bold', 'Italic', 'Underline', 'Strike'],
+	    ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', 'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock'],
+		['Styles', 'Format', 'Font', 'FontSize'], ['TextColor', 'BGColor'],
+		
+	];
 
 
 };
